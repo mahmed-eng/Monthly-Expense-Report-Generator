@@ -26,7 +26,7 @@ JavaScript
 Chart.js (for chart visualization)
 
 ### Author
-M. Ahmed Hashmi
+#### M. Ahmed Hashmi
 
 ### Website URL:
 https://merg-b41d5.web.app
