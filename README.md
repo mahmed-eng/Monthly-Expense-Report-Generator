@@ -28,4 +28,7 @@ Chart.js (for chart visualization)
 ### Author
 M. Ahmed Hashmi
 
+### Website URL:
+https://merg-b41d5.web.app
+
 Feel free to contribute and improve this project by submitting pull requests or opening issues.
