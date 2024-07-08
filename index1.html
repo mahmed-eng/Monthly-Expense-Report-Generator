@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Expense Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .container h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+        .report {
+            margin-top: 20px;
+        }
+        #expenseChart {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Monthly Expense Report (PKR)</h2>
+        <div class="form-group">
+            <label for="mondayExpense">Monday Expense (PKR):</label>
+            <input type="number" id="mondayExpense" placeholder="Enter your Monday expense">
+        </div>
+        <div class="form-group">
+            <label for="tuesdayExpense">Tuesday Expense (PKR):</label>
+            <input type="number" id="tuesdayExpense" placeholder="Enter your Tuesday expense">
+        </div>
+        <div class="form-group">
+            <label for="wednesdayExpense">Wednesday Expense (PKR):</label>
+            <input type="number" id="wednesdayExpense" placeholder="Enter your Wednesday expense">
+        </div>
+        <div class="form-group">
+            <label for="thursdayExpense">Thursday Expense (PKR):</label>
+            <input type="number" id="thursdayExpense" placeholder="Enter your Thursday expense">
+        </div>
+        <div class="form-group">
+            <label for="fridayExpense">Friday Expense (PKR):</label>
+            <input type="number" id="fridayExpense" placeholder="Enter your Friday expense">
+        </div>
+        <div class="form-group">
+            <label for="saturdayExpense">Saturday Expense (PKR):</label>
+            <input type="number" id="saturdayExpense" placeholder="Enter your Saturday expense">
+        </div>
+        <div class="form-group">
+            <label for="sundayExpense">Sunday Expense (PKR):</label>
+            <input type="number" id="sundayExpense" placeholder="Enter your Sunday expense">
+        </div>
+        <div class="form-group">
+            <button onclick="generateReport()">Generate Report</button>
+        </div>
+        <div class="report" id="report"></div>
+        <canvas id="expenseChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function generateReport() {
+            const mondayExpense = document.getElementById('mondayExpense').value || 0;
+            const tuesdayExpense = document.getElementById('tuesdayExpense').value || 0;
+            const wednesdayExpense = document.getElementById('wednesdayExpense').value || 0;
+            const thursdayExpense = document.getElementById('thursdayExpense').value || 0;
+            const fridayExpense = document.getElementById('fridayExpense').value || 0;
+            const saturdayExpense = document.getElementById('saturdayExpense').value || 0;
+            const sundayExpense = document.getElementById('sundayExpense').value || 0;
+
+            const weeks = 4;
+            const extraDays = 2;
+            const extraDay1Expense = parseFloat(mondayExpense);
+            const extraDay2Expense = parseFloat(tuesdayExpense);
+
+            const totalMondayExpense = mondayExpense * weeks + (extraDays >= 1 ? extraDay1Expense : 0);
+            const totalTuesdayExpense = tuesdayExpense * weeks + (extraDays == 2 ? extraDay2Expense : 0);
+            const totalWednesdayExpense = wednesdayExpense * weeks;
+            const totalThursdayExpense = thursdayExpense * weeks;
+            const totalFridayExpense = fridayExpense * weeks;
+            const totalSaturdayExpense = saturdayExpense * weeks;
+            const totalSundayExpense = sundayExpense * weeks;
+
+            const totalExpense = totalMondayExpense + totalTuesdayExpense + totalWednesdayExpense +
+                                 totalThursdayExpense + totalFridayExpense + totalSaturdayExpense + totalSundayExpense;
+
+            const reportDiv = document.getElementById('report');
+            reportDiv.innerHTML = `
+                <h3>Monthly Expense Report</h3>
+                <p>Monday: PKR ${totalMondayExpense.toFixed(2)}</p>
+                <p>Tuesday: PKR ${totalTuesdayExpense.toFixed(2)}</p>
+                <p>Wednesday: PKR ${totalWednesdayExpense.toFixed(2)}</p>
+                <p>Thursday: PKR ${totalThursdayExpense.toFixed(2)}</p>
+                <p>Friday: PKR ${totalFridayExpense.toFixed(2)}</p>
+                <p>Saturday: PKR ${totalSaturdayExpense.toFixed(2)}</p>
+                <p>Sunday: PKR ${totalSundayExpense.toFixed(2)}</p>
+                <p><strong>Total Monthly Expense: PKR ${totalExpense.toFixed(2)}</strong></p>
+            `;
+
+            const ctx = document.getElementById('expenseChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                    datasets: [{
+                        label: 'Total Expense (PKR)',
+                        data: [totalMondayExpense, totalTuesdayExpense, totalWednesdayExpense, 
+                               totalThursdayExpense, totalFridayExpense, totalSaturdayExpense, totalSundayExpense],
+                        backgroundColor: [
+                            'blue', 'blue', 'blue', 'blue', 'blue', 'green', 'red'
+                        ]
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'PKR ' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

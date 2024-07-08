@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Expense Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .container h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+        .report {
+            margin-top: 20px;
+        }
+        #expenseChart {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Monthly Expense Report</h2>
+        <div class="form-group">
+            <label for="dailyExpense">Daily Expense:</label>
+            <input type="number" id="dailyExpense" placeholder="Enter your daily expense">
+        </div>
+        <div class="form-group">
+            <label for="saturdayExpense">Saturday Expense:</label>
+            <input type="number" id="saturdayExpense" placeholder="Enter your Saturday expense">
+        </div>
+        <div class="form-group">
+            <label for="sundayExpense">Sunday Expense:</label>
+            <input type="number" id="sundayExpense" placeholder="Enter your Sunday expense">
+        </div>
+        <div class="form-group">
+            <button onclick="generateReport()">Generate Report</button>
+        </div>
+        <div class="report" id="report"></div>
+        <canvas id="expenseChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function generateReport() {
+            const dailyExpense = document.getElementById('dailyExpense').value;
+            const saturdayExpense = document.getElementById('saturdayExpense').value;
+            const sundayExpense = document.getElementById('sundayExpense').value;
+
+            if (!dailyExpense || !saturdayExpense || !sundayExpense) {
+                alert('Please enter all expenses.');
+                return;
+            }
+
+            const weeks = 4;
+            const extraDays = 2;
+            const weekdaysExpense = dailyExpense * weeks * 5;
+            const saturdaysExpense = saturdayExpense * weeks;
+            const sundaysExpense = sundayExpense * weeks;
+            const extraDaysExpense = dailyExpense * extraDays;
+
+            const totalExpense = weekdaysExpense + saturdaysExpense + sundaysExpense + extraDaysExpense;
+
+            const reportDiv = document.getElementById('report');
+            reportDiv.innerHTML = `
+                <h3>Monthly Expense Report</h3>
+                <p>Weekdays (Monday to Friday): $${weekdaysExpense}</p>
+                <p>Saturdays: $${saturdaysExpense}</p>
+                <p>Sundays: $${sundaysExpense}</p>
+                <p>Extra Days: $${extraDaysExpense}</p>
+                <p><strong>Total Monthly Expense: $${totalExpense}</strong></p>
+            `;
+
+            const ctx = document.getElementById('expenseChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Extra Days'],
+                    datasets: [{
+                        label: 'Total Expense',
+                        data: [dailyExpense * 4, dailyExpense * 4, dailyExpense * 4, dailyExpense * 4, dailyExpense * 4, saturdayExpense * 4, sundayExpense * 4, dailyExpense * extraDays],
+                        backgroundColor: [
+                            'blue', 'blue', 'blue', 'blue', 'blue', 'green', 'red', 'yellow'
+                        ]
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
