@@ -2,9 +2,14 @@
 This project provides a simple web-based monthly expense report generator using HTML, CSS, and JavaScript. It allows users to input daily expenses and generates a comprehensive report with a visual representation using Chart.js.
 
 # Features
-## Input Form: Users can enter daily expenses for each day of the week (Monday to Sunday).
-## Report Generation: Upon clicking the "Generate Report" button, the total expenses for each day and the overall monthly expense are calculated and displayed.
-## Visual Representation: A bar chart visualizes the weekly expenses using Chart.js.
+## Input Form: 
+Users can enter daily expenses for each day of the week (Monday to Sunday).
+
+## Report Generation: 
+Upon clicking the "Generate Report" button, the total expenses for each day and the overall monthly expense are calculated and displayed.
+
+## Visual Representation: 
+A bar chart visualizes the weekly expenses using Chart.js.
 
 # Usage
 ## To use the expense report generator:
