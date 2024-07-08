@@ -1,4 +1,4 @@
-# Monthly Expense Report Generator (HTML + JavaScript)
+# Monthly Expense Report Generator (MERG)
 This project provides a simple web-based monthly expense report generator using HTML, CSS, and JavaScript. It allows users to input daily expenses and generates a comprehensive report with a visual representation using Chart.js.
 
 # Features
